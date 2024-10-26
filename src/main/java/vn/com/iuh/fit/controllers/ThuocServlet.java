@@ -5,8 +5,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import vn.com.iuh.fit.dao.LoaiThuocDAO;
-import vn.com.iuh.fit.dao.ThuocDAO;
+import vn.com.iuh.fit.repositories.LoaiThuocDAO;
+import vn.com.iuh.fit.repositories.ThuocDAO;
 import vn.com.iuh.fit.models.LoaiThuoc;
 import vn.com.iuh.fit.models.Thuoc;
 
@@ -24,7 +24,14 @@ public class ThuocServlet extends HttpServlet {
     }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+    }
+    private void setThuocList(HttpServletRequest req) {
+        List<Thuoc> thuocList = thuocDAO.getAllThuoc();
+        req.setAttribute("thuocList", thuocList);
+    }
+    private void setLoaiThuocList(HttpServletRequest req) {
+        List<LoaiThuoc> loaiThuocList = loaiThuocDAO.getAllLoaiThuoc();
+        req.setAttribute("loaiThuocList", loaiThuocList);
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -36,13 +43,11 @@ public class ThuocServlet extends HttpServlet {
         }
         switch (action) {
             case "thuocList":
-                List<Thuoc> thuocList = thuocDAO.getAllThuoc();
-                req.setAttribute("thuocList", thuocList);
+                setThuocList(req);
                 req.getRequestDispatcher("thuocList.jsp").forward(req, resp);
                 break;
             case "thuocForm":
-                List<LoaiThuoc> loaiThuocList = loaiThuocDAO.getAllLoaiThuoc();
-                req.setAttribute("loaiThuocList", loaiThuocList);
+                setLoaiThuocList(req);
                 req.getRequestDispatcher("thuocForm.jsp").forward(req, resp);
                 break;
             case "addThuoc":
@@ -60,11 +65,54 @@ public class ThuocServlet extends HttpServlet {
                 loaiThuoc.setMaLoai(loaiThuocId);
 
                 thuoc.setLoaiThuoc(loaiThuoc);
-
                 thuocDAO.addThuoc(thuoc);
-
+                req.getRequestDispatcher("/thuoc?action=thuocList").forward(req, resp);
                 break;
-            case "search":
+            case "searchThuoc":
+                setLoaiThuocList(req);
+                req.getRequestDispatcher("searchThuoc.jsp").forward(req, resp);
+                break;
+            case "searchThuocByName":
+                List<Thuoc> thuocListByName = thuocDAO.getThuocByName(req.getParameter("tenThuoc"));
+                req.setAttribute("thuocList", thuocListByName);
+                List<LoaiThuoc> loaiThuocListForName = loaiThuocDAO.getAllLoaiThuoc();
+                req.setAttribute("loaiThuocList", loaiThuocListForName);
+                req.getRequestDispatcher("searchThuoc.jsp").forward(req, resp);
+                break;
+            case "searchThuocByLoaiThuoc":
+                int loaiThuoc1 = Integer.parseInt(req.getParameter("loaiThuoc"));
+                List<Thuoc> thuocListByLoaiThuoc = thuocDAO.getThuocbyLoaiThuoc(loaiThuoc1);
+                req.setAttribute("thuocList", thuocListByLoaiThuoc);
+                setLoaiThuocList(req);
+                req.getRequestDispatcher("searchThuoc.jsp").forward(req, resp);
+                break;
+            case "editThuoc":
+                int maThuoc = Integer.parseInt(req.getParameter("maThuoc"));
+                req.setAttribute("thuocID", maThuoc);
+                Thuoc thuoc1 = thuocDAO.getThuocById(maThuoc);
+                req.setAttribute("thuoc", thuoc1);
+                setLoaiThuocList(req);
+                req.getRequestDispatcher("thuocForm.jsp").forward(req, resp);
+                break;
+            case "updateThuoc":
+                int maThuoc1 = Integer.parseInt(req.getParameter("maThuoc"));
+                String tenThuoc1 = req.getParameter("tenThuoc");
+                double gia1 = Double.parseDouble(req.getParameter("gia"));
+                int namSX1 = Integer.parseInt(req.getParameter("namSX"));
+                int loaiThuocId1 = Integer.parseInt(req.getParameter("loaiThuoc"));
+
+                Thuoc thuocUpdate = new Thuoc();
+                thuocUpdate.setMaThuoc(maThuoc1);
+                thuocUpdate.setTenThuoc(tenThuoc1);
+                thuocUpdate.setGia(gia1);
+                thuocUpdate.setNamSX(namSX1);
+
+                LoaiThuoc loaiThuocUpdate = new LoaiThuoc();
+                loaiThuocUpdate.setMaLoai(loaiThuocId1);
+                thuocUpdate.setLoaiThuoc(loaiThuocUpdate);
+                System.out.println(thuocUpdate);
+                thuocDAO.updateThuoc(thuocUpdate);
+                req.getRequestDispatcher("/thuoc?action=thuocList").forward(req, resp);
                 break;
             default:
                 break;

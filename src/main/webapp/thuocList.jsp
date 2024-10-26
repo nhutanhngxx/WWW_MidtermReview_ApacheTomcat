@@ -34,7 +34,7 @@
 </head>
 <body>
 <h2>Danh sách loại thuốc</h2>
-<form action="controller" method="post">
+<form action="thuoc" method="post">
   <table>
     <tr>
       <th>Mã thuốc</th>
@@ -42,6 +42,7 @@
       <th>Đơn giá</th>
       <th>Năm sản xuất</th>
       <th>Loại thuốc</th>
+      <th>Chức năng</th>
     </tr>
     <c:forEach var="thuoc" items="${thuocList}">
       <tr>
@@ -50,6 +51,12 @@
         <td>${thuoc.gia}</td>
         <td>${thuoc.namSX}</td>
         <td>${thuoc.loaiThuoc.tenLoai}</td>
+        <td>
+          <form action="thuoc" method="post">
+            <input type="hidden" name="maThuoc" value="${thuoc.maThuoc}">
+            <button type="submit" name="action" value="editThuoc" >EDIT</button>
+          </form>
+        </td>
       </tr>
     </c:forEach>
   </table>

@@ -6,7 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import vn.com.iuh.fit.dao.LoaiThuocDAO;
+import vn.com.iuh.fit.repositories.LoaiThuocDAO;
 import vn.com.iuh.fit.models.LoaiThuoc;
 
 import java.io.IOException;
@@ -39,7 +39,6 @@ public class LoaiThuocServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
         System.out.printf("Action = %s\n", action);
-
         if (action == null || action.isEmpty()) {
             resp.sendRedirect("index.jsp");
             return;

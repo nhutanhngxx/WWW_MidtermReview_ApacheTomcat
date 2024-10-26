@@ -59,7 +59,7 @@ public class Thuoc {
                 ", tenThuoc='" + tenThuoc + '\'' +
                 ", gia=" + gia +
                 ", namSX=" + namSX +
-//                ", loaiThuoc=" + loaiThuoc.getMaLoai() +
+                ", loaiThuoc=" + loaiThuoc.getMaLoai() +
                 ", loaiThuoc=" + loaiThuoc.getTenLoai() +
                 '}';
     }

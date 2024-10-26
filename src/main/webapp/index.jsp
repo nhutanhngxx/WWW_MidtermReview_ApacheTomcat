@@ -25,7 +25,7 @@
         <form action="thuoc" method="post">
             <button type="submit" name="action" value="thuocList" class="btn-chucnang">Danh sách Thuốc</button>
             <button type="submit" name="action" value="thuocForm" class="btn-chucnang">Thêm mới Thuốc</button>
-            <button type="button" onclick="" class="btn-chucnang">Tìm kiếm Loại Thuốc</button>
+            <button type="submit" name="action" value="searchThuoc" class="btn-chucnang">Tìm kiếm Thuốc</button>
         </form>
     </body>
 </html>

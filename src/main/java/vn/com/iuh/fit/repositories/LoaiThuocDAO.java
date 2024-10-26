@@ -1,4 +1,4 @@
-package vn.com.iuh.fit.dao;
+package vn.com.iuh.fit.repositories;
 
 import vn.com.iuh.fit.models.LoaiThuoc;
 import vn.com.iuh.fit.utils.ConnectDatabase;
@@ -31,7 +31,7 @@ public class LoaiThuocDAO {
     public boolean isLoaiThuocExists(String tenLoai) {
         String sql = "SELECT COUNT(*) FROM loaithuoc WHERE loaiThuoc = ?";
         try (Connection connection = ConnectDatabase.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, tenLoai);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
